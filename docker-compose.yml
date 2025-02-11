@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/soccerDB
+      - SOCCER_API_TOKEN=8643e1b892af432cbf5cac6b0b1aa9f4
+      - PORT=4000
+    volumes:
+      - /app/node_modules
+    command: ["node", "index.js"]
+
+  mongo:
+    image: mongo:latest
+    container_name: soccer-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
